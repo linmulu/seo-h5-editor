@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>OctoComics SEO编辑器</title>
+  <script src="https://cdn.tiny.cloud/1/xn2pshjtcidhr9wo8p3u6zjblo88ip5l7mjkg6j7zxz0kg9j/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+  <h2>OctoComics SEO编辑器</h2>
+  <textarea id="editor">在这里写你的内容...</textarea>
+
+  <script>
+    const STORAGE_KEY = 'tinymce_seo_autosave';
+
+    tinymce.init({
+      selector: '#editor',
+      height: 600,
+      menubar: 'file edit view insert format tools table help',
+      plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+      toolbar: `undo redo | blocks | bold italic underline strikethrough |
+                alignleft aligncenter alignright alignjustify |
+                bullist numlist outdent indent | link image media | 
+                forecolor backcolor removeformat | code fullscreen`,
+      setup: function (editor) {
+        editor.on('init', function () {
+          const savedContent = localStorage.getItem(STORAGE_KEY);
+          if (savedContent) {
+            editor.setContent(savedContent);
+          }
+        });
+
+        editor.on('change keyup', function () {
+          const content = editor.getContent();
+          localStorage.setItem(STORAGE_KEY, content);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
